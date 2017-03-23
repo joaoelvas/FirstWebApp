@@ -2,24 +2,31 @@ package pt.unl.fct.di.apdc.firstwebapp.util;
 
 public class RegisterData {
 	
-	public String username;
-	public String password;
 	public String email;
-	public String name;
+	public String fixedPhone;
+	public String mobilePhone;
+	public String street;
+	public String comp;
+	public String local;
+	public String cp;
+	public String nif;
+	public String cc;
+	public String password;
 	
 	public RegisterData() {
 		
 	}
 	
-	public RegisterData(String username, String password) {
-		this.username = username;
-		this.password = password;
-	}
-	
-	public RegisterData(String username, String password, String email, String name) {
-		this.username = username;
-		this.password = password;
+	public RegisterData(String email, String fixedPhone, String mobilePhone, String street, String comp, String local, String cp, String nif, String cc, String password) {
 		this.email = email;
-		this.name = name;
+		this.fixedPhone = fixedPhone;
+		this.mobilePhone = mobilePhone;
+		this.street = street;
+		this.comp = comp;
+		this.local = local;
+		this.cp = cp;
+		this.nif = nif;
+		this.cc = cc;
+		this.password = password;
 	}
 }

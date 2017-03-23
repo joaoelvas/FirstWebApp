@@ -36,75 +36,109 @@ public class RegisterResource {
 		
 	}
 	
+//	@POST
+//	@Path("/v1")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response register(RegisterData data) {
+//		
+//		Entity person = new Entity("Person", data.username);
+//		person.setProperty("password",DigestUtils.sha512Hex(data.password));
+//		person.setUnindexedProperty("user_creation_time", new Date());
+//		
+//		try {
+//			DATASTORE.put(person);
+//		} catch(Exception e) {
+//			return Response.status(Status.BAD_REQUEST).entity(g.toJson("Error occured.")).build();
+//		}
+//		
+//		
+//		return Response.ok().entity(g.toJson("User registered.")).build();
+//	}
+//	
+//	@POST
+//	@Path("/v2")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response register2(RegisterData data) {
+//		
+//		
+//		
+//		try {
+//			DATASTORE.get(KeyFactory.createKey("Person", data.username));
+//		} catch (EntityNotFoundException e1) {
+//			try {
+//				Entity person = new Entity("Person", data.username);
+//				person.setProperty("password",DigestUtils.sha512Hex(data.password));
+//				person.setProperty("email",data.email);
+//				person.setProperty("name",data.name);
+//				person.setUnindexedProperty("user_creation_time", new Date());
+//				
+//				DATASTORE.put(person);
+//				LOG.info("User '" + data.username + "' registered!");
+//			} catch(Exception e) {
+//				return Response.status(Status.BAD_REQUEST).entity(g.toJson("Error occured.")).build();
+//			}
+//			
+//			return Response.ok().entity(g.toJson("User registered.")).build();
+//		}
+//		
+//		LOG.warning("Entity found: " + data.username);
+//		return Response.status(Status.FORBIDDEN).entity(g.toJson("User already exists.")).build();	
+//	}
+//	
+//	@POST
+//	@Path("/v3")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response register3(RegisterData data) {
+//		Transaction txn = DATASTORE.beginTransaction();
+//		
+//		try {
+//			DATASTORE.get(KeyFactory.createKey("Person", data.username));
+//			txn.rollback();
+//			LOG.warning("Entity found: " + data.username);
+//			return Response.status(Status.FORBIDDEN).entity(g.toJson("User already exists.")).build();
+//		} catch(EntityNotFoundException e) {
+//			Entity person = new Entity("Person", data.username);
+//			person.setProperty("password",DigestUtils.sha512Hex(data.password));
+//			person.setProperty("email",data.email);
+//			person.setProperty("name",data.name);
+//			person.setUnindexedProperty("user_creation_time", new Date());
+//			
+//			DATASTORE.put(txn, person);
+//			LOG.info("User '" + data.username + "' registered!");
+//			txn.commit();
+//			return Response.ok().entity(g.toJson("User registered.")).build();
+//		} finally {
+//			if(txn.isActive()) {
+//				txn.rollback();
+//			}
+//		}
+//	}
+	
 	@POST
-	@Path("/v1")
+	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response register(RegisterData data) {
-		
-		Entity person = new Entity("Person", data.username);
-		person.setProperty("password",DigestUtils.sha512Hex(data.password));
-		person.setUnindexedProperty("user_creation_time", new Date());
-		
-		try {
-			DATASTORE.put(person);
-		} catch(Exception e) {
-			return Response.status(Status.BAD_REQUEST).entity(g.toJson("Error occured.")).build();
-		}
-		
-		
-		return Response.ok().entity(g.toJson("User registered.")).build();
-	}
-	
-	@POST
-	@Path("/v2")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response register2(RegisterData data) {
-		
-		
-		
-		try {
-			DATASTORE.get(KeyFactory.createKey("Person", data.username));
-		} catch (EntityNotFoundException e1) {
-			try {
-				Entity person = new Entity("Person", data.username);
-				person.setProperty("password",DigestUtils.sha512Hex(data.password));
-				person.setProperty("email",data.email);
-				person.setProperty("name",data.name);
-				person.setUnindexedProperty("user_creation_time", new Date());
-				
-				DATASTORE.put(person);
-				LOG.info("User '" + data.username + "' registered!");
-			} catch(Exception e) {
-				return Response.status(Status.BAD_REQUEST).entity(g.toJson("Error occured.")).build();
-			}
-			
-			return Response.ok().entity(g.toJson("User registered.")).build();
-		}
-		
-		LOG.warning("Entity found: " + data.username);
-		return Response.status(Status.FORBIDDEN).entity(g.toJson("User already exists.")).build();	
-	}
-	
-	@POST
-	@Path("/v3")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response register3(RegisterData data) {
 		Transaction txn = DATASTORE.beginTransaction();
-		
 		try {
-			DATASTORE.get(KeyFactory.createKey("Person", data.username));
+			DATASTORE.get(KeyFactory.createKey("User", data.email));
 			txn.rollback();
-			LOG.warning("Entity found: " + data.username);
+			LOG.warning("Entity found: " + data.email);
 			return Response.status(Status.FORBIDDEN).entity(g.toJson("User already exists.")).build();
 		} catch(EntityNotFoundException e) {
-			Entity person = new Entity("Person", data.username);
-			person.setProperty("password",DigestUtils.sha512Hex(data.password));
-			person.setProperty("email",data.email);
-			person.setProperty("name",data.name);
-			person.setUnindexedProperty("user_creation_time", new Date());
+			Entity user = new Entity("User", data.email);
+			user.setProperty("fixedPhone", data.fixedPhone);
+			user.setProperty("mobilePhone", data.mobilePhone);
+			user.setProperty("street",data.street);
+			user.setProperty("comp",data.comp);
+			user.setProperty("local",data.local);
+			user.setProperty("postalCode",data.cp);
+			user.setProperty("nif",data.nif);
+			user.setProperty("cc",data.cc);
+			user.setProperty("password",DigestUtils.sha512Hex(data.password));
+			user.setUnindexedProperty("user_creation_time", new Date());
 			
-			DATASTORE.put(txn, person);
-			LOG.info("User '" + data.username + "' registered!");
+			DATASTORE.put(txn, user);
+			LOG.info("User '" + data.email + "' registered!");
 			txn.commit();
 			return Response.ok().entity(g.toJson("User registered.")).build();
 		} finally {

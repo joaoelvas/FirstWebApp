@@ -55,54 +55,54 @@ public class LoginResource {
 		
 	}
 	
+//	@POST
+//	@Path("/v0")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response doLogin(LoginData data) {
+//		LOG.fine("Attempt to loggin user: " + data.username);
+//		
+//		if(data.username.equals("joaoelvas") && data.password.equals("password")) {
+//			AuthToken token = new AuthToken(data.username);
+//			LOG.info("User '" + data.username + "' logged in sussessfully.");
+//			return Response.ok(g.toJson(token)).build();
+//		}
+//		
+//		LOG.warning("Failed login attempt for username: " + data.username);
+//		return Response.status(Status.FORBIDDEN).entity(g.toJson("Incorrect username or password.")).build();
+//	}
+//	
+//	@POST
+//	@Path("/v1")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response doLogin1(LoginData data) {
+//		
+//		try {
+//			Entity person = DATASTORE.get(KeyFactory.createKey("Person", data.username));
+//			String hashedPWD = (String) person.getProperty("password");
+//			if(hashedPWD.equals(DigestUtils.sha512Hex(data.password))) {
+//				AuthToken token = new AuthToken(data.username);
+//				LOG.info("User '" + data.username + "' logged in sussessfully.");
+//				return Response.ok(g.toJson(token)).build();
+//			}
+//			
+//		} catch (EntityNotFoundException e) {
+//			LOG.warning("Failed login attempt for username: " + data.username);
+//			return Response.status(Status.FORBIDDEN).entity(g.toJson("(1) Incorrect username or password.")).build();
+//		}
+//		
+//		
+//		return Response.status(Status.FORBIDDEN).entity(g.toJson("(2) Incorrect username or password.")).build();
+//	}
+	
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response doLogin(LoginData data) {
-		LOG.fine("Attempt to loggin user: " + data.username);
-		
-		if(data.username.equals("joaoelvas") && data.password.equals("password")) {
-			AuthToken token = new AuthToken(data.username);
-			LOG.info("User '" + data.username + "' logged in sussessfully.");
-			return Response.ok(g.toJson(token)).build();
-		}
-		
-		LOG.warning("Failed login attempt for username: " + data.username);
-		return Response.status(Status.FORBIDDEN).entity(g.toJson("Incorrect username or password.")).build();
-	}
-	
-	@POST
-	@Path("/v1")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response doLogin1(LoginData data) {
-		
-		try {
-			Entity person = DATASTORE.get(KeyFactory.createKey("Person", data.username));
-			String hashedPWD = (String) person.getProperty("password");
-			if(hashedPWD.equals(DigestUtils.sha512Hex(data.password))) {
-				AuthToken token = new AuthToken(data.username);
-				LOG.info("User '" + data.username + "' logged in sussessfully.");
-				return Response.ok(g.toJson(token)).build();
-			}
-			
-		} catch (EntityNotFoundException e) {
-			LOG.warning("Failed login attempt for username: " + data.username);
-			return Response.status(Status.FORBIDDEN).entity(g.toJson("(1) Incorrect username or password.")).build();
-		}
-		
-		
-		return Response.status(Status.FORBIDDEN).entity(g.toJson("(2) Incorrect username or password.")).build();
-	}
-	
-	@POST
-	@Path("/v2")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response doLogin2(LoginData data, @Context HttpServletRequest request, @Context HttpHeaders headers) {
 		
-		LOG.fine("Attempt to login use: " + data.username);
+		LOG.fine("Attempt to login use: " + data.email);
 		
 		Transaction txn = DATASTORE.beginTransaction();
-		Key key = KeyFactory.createKey("Person", data.username);
+		Key key = KeyFactory.createKey("Person", data.email);
 		
 		try {
 			Entity user = DATASTORE.get(key);
@@ -145,8 +145,8 @@ public class LoginResource {
 				txn.commit();
 				
 				// return token
-				AuthToken token = new AuthToken(data.username);
-				LOG.info("User '" + data.username + "' logged in successfully.");
+				AuthToken token = new AuthToken(data.email);
+				LOG.info("User '" + data.email + "' logged in successfully.");
 				return Response.ok(g.toJson(token)).build();
 				
 			} else {
@@ -156,13 +156,13 @@ public class LoginResource {
 				DATASTORE.put(txn, uStats);
 				txn.commit();
 				
-				LOG.warning("Wrong password for user: '" + data.username + "'.");
+				LOG.warning("Wrong password for user: '" + data.email + "'.");
 				return Response.status(Status.FORBIDDEN).build();
 			}
 			
 		} catch(EntityNotFoundException e) {
 			// username does not exist
-			LOG.warning("Failed login attempt on username: " + data.username);
+			LOG.warning("Failed login attempt on username: " + data.email);
 			return Response.status(Status.FORBIDDEN).build();
 		} finally {
 			if(txn.isActive()) {
@@ -175,7 +175,7 @@ public class LoginResource {
 	@POST
 	@Path("/user")
 	public Response user(LoginData data) {
-		Key userKey = KeyFactory.createKey("Person", data.username);
+		Key userKey = KeyFactory.createKey("Person", data.email);
 		
 		try {
 			Entity user = DATASTORE.get(userKey);
@@ -207,22 +207,13 @@ public class LoginResource {
 				return Response.ok(g.toJson(loginDates)).build();
 				
 			} else {
-				LOG.warning("Wrong password for username: " + data.username);
+				LOG.warning("Wrong password for username: " + data.email);
 				return Response.status(Status.FORBIDDEN).build();
 			}
 			
 		} catch(EntityNotFoundException e) {
-			LOG.warning("User: '" + data.username + "' not found.");
+			LOG.warning("User: '" + data.email + "' not found.");
 			return Response.status(Status.FORBIDDEN).entity(g.toJson("(1) Incorrect username or password.")).build();
 		}
-	}
-	
-	@GET
-	@Path("/{username}")
-	public Response checkUsernameAvailable(@PathParam("username") String username) {
-		if(!username.equals("joaoelvas")) {
-			return Response.ok().entity(g.toJson(false)).build();
-		} else {
-			return Response.ok().entity(g.toJson(true)).build(); }
 	}
 }
