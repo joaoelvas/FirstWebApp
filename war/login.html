@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+    <title>firstwebsite frontend</title>
+    
+    <meta charset="utf-8">
+    
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/pure/0.6.2/pure-min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/restfrontend.css">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="js/jsonify.js"></script>
+    <script type="text/javascript" src="js/restfrontend.js"></script>
+</head>
+
+<body>
+    
+    <header>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">APDC</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="../"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+                        <li class="active"><a href="../apdc"><span class="glyphicon glyphicon-briefcase"></span>  APDC</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/secret"><span class="glyphicon glyphicon-lock"></span>  Secret Area</a></li>
+                        <li><a href="login.html"><span class="glyphicon glyphicon-log-in"></span>  Login</a></li>
+                    </ul>
+                </div>
+            </nav>
+    </header>
+    
+    <h1>
+        Login Page
+    </h1>
+    
+    <div class="row">
+    <div class="col-md-6 center">
+    	<section class="loginform cf">
+        	<form name="login" class="pure-form pure-form-stacked" accept-charset="utf-8">
+            	<fieldset>
+                	<legend>Firstwebsite login</legend>
+                	<label for="username">Utilizador</label>
+                	<input type="text" id="username" name="username" placeholder="utilizador" required>
+                	<label for="password">Password</label>
+                	<input type="password" id="password" name="password" placeholder="password" required>
+                	<label for="remember" class="pure-checkbox">
+                    	<input id="remember" type="checkbox"> Remember me
+                	</label>
+                	<input type="submit" class="pure-button pure-button-primary" value="Login">
+            	</fieldset>
+        	</form>
+    	</section>
+    </div>
+    <div class="col-md-6 centered">
+    	<section class="registerform cf">
+        	<form name="register" class="pure-form pure-form-stacked" accept-charset="utf-8">
+            	<fieldset>
+                	<legend>Firstwebsite register</legend>
+                    <label for="name">Nome</label>
+                	<input type="text" id="name" name="name" placeholder="nome" required>
+                	<label for="username">Utilizador</label>
+                	<input type="text" id="username" name="username" placeholder="utilizador" required>
+                	<label for="password">Password</label>
+                	<input type="password" id="password" name="password" placeholder="password" required>
+                	<input type="submit" class="pure-button pure-button-primary" value="Register">
+            	</fieldset>
+        	</form>
+    	</section>
+    </div>
+    </div>
+    
+</body>
+
+</html>
