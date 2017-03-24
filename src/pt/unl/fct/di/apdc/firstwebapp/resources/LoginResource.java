@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -102,7 +103,7 @@ public class LoginResource {
 		LOG.fine("Attempt to login use: " + data.email);
 		
 		Transaction txn = DATASTORE.beginTransaction();
-		Key key = KeyFactory.createKey("Person", data.email);
+		Key key = KeyFactory.createKey("User", data.email);
 		
 		try {
 			Entity user = DATASTORE.get(key);
@@ -163,8 +164,12 @@ public class LoginResource {
 		} catch(EntityNotFoundException e) {
 			// username does not exist
 			LOG.warning("Failed login attempt on username: " + data.email);
+			LOG.logp(Level.WARNING, LoginResource.class.getName(), "doLogin2", e.getMessage(), e);
 			return Response.status(Status.FORBIDDEN).build();
-		} finally {
+		} catch(Exception e) {
+			LOG.logp(Level.WARNING, LoginResource.class.getName(), "doLogin2", e.getMessage(), e);
+			return Response.status(Status.BAD_REQUEST).build();
+		}finally {
 			if(txn.isActive()) {
 				txn.rollback();
 				return Response.status(Status.INTERNAL_SERVER_ERROR).build();
