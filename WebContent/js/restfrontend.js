@@ -77,5 +77,36 @@ window.onload = function() {
     var frmr = $('form[name="register"]');
     frms[0].onsubmit = captureData;
     frmr[0].onsubmit = registerData;
+    
+    if(localStorage.getItem('tokenID') === null) {
+        
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "http://firstwebapp-159414.appspot.com/rest/login/check",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            dataType: "json",
+            success: function(response) {
+                if(response.statusCode === 200) {
+                    // apagar login e por função de logout
+                    $("#login-link").text("  Logout");
+                    $("#login-link").attr("href","");
+                } else if(response.statusCode === 401) {
+                    alert("Session expired, please login again!");
+                } else if(response.statusCode === 500) {
+                    alert("Internal Server Error");
+                } else if(response.statusCode === 403) {
+                    alert("No Active Session, please login!");
+                } else {
+                    alert("No response");
+                }
+            },
+            error: function(response) {
+                alert("Error: "+ response.status);
+            },
+            data: JSON.stringify(data)
+        });    
+    }
 }
 

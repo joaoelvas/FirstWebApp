@@ -10,10 +10,8 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -41,6 +39,7 @@ import com.google.gson.Gson;
 
 import pt.unl.fct.di.apdc.firstwebapp.util.AuthToken;
 import pt.unl.fct.di.apdc.firstwebapp.util.LoginData;
+import pt.unl.fct.di.apdc.firstwebapp.util.TokenID;
 
 @Path("login")
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -147,6 +146,13 @@ public class LoginResource {
 				
 				// return token
 				AuthToken token = new AuthToken(data.email);
+				
+				// store the token
+				Entity t = new Entity("Token", token.getTokenID());
+				t.setProperty("username", token.getUsername());
+				t.setProperty("creation_time", token.getCreationData());
+				t.setProperty("expiration_time", token.getExpirationData());
+				
 				LOG.info("User '" + data.email + "' logged in successfully.");
 				return Response.ok(g.toJson(token)).build();
 				
@@ -174,6 +180,31 @@ public class LoginResource {
 				txn.rollback();
 				return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 			}
+		}
+	}
+	
+	@POST
+	@Path("/check")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response isLogged(TokenID data) {
+		
+		
+		Key key = KeyFactory.createKey("Token", data.tokenID);
+		
+		try {
+			Entity token = DATASTORE.get(key);
+			
+			if((long) token.getProperty("expiration_time") < System.currentTimeMillis()) {
+				return Response.status(Status.UNAUTHORIZED).entity(g.toJson("Session expired.")).build();
+			} else {
+				return Response.ok().build();
+			}
+			
+		} catch(EntityNotFoundException e) {
+			return Response.status(Status.FORBIDDEN).entity(g.toJson("Invalid token!")).build();
+		} catch(Exception e) {
+			LOG.logp(Level.WARNING, LoginResource.class.getName(), "isLogged", e.getMessage(), e);
+			return Response.status(Status.BAD_REQUEST).build();
 		}
 	}
 	
