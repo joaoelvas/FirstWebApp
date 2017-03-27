@@ -22,7 +22,7 @@
 <body>
     
     <header>
-            <nav class="navbar navbar-inverse">
+            <nav class="navbar">
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <a class="navbar-brand" href="#">APDC</a>
@@ -39,45 +39,99 @@
             </nav>
     </header>
     
-    <h1>
-        Login Page
-    </h1>
-    
-    <div class="row">
-    <div class="col-md-6 center">
-    	<section class="loginform cf">
-        	<form name="login" class="pure-form pure-form-stacked" accept-charset="utf-8">
-            	<fieldset>
-                	<legend>Firstwebsite login</legend>
-                	<label for="username">Utilizador</label>
-                	<input type="text" id="username" name="username" placeholder="utilizador" required>
-                	<label for="password">Password</label>
-                	<input type="password" id="password" name="password" placeholder="password" required>
-                	<label for="remember" class="pure-checkbox">
-                    	<input id="remember" type="checkbox"> Remember me
-                	</label>
-                	<input type="submit" class="pure-button pure-button-primary" value="Login">
-            	</fieldset>
-        	</form>
-    	</section>
-    </div>
-    <div class="col-md-6 centered">
-    	<section class="registerform cf">
-        	<form name="register" class="pure-form pure-form-stacked" accept-charset="utf-8">
-            	<fieldset>
-                	<legend>Firstwebsite register</legend>
-                    <label for="name">Nome</label>
-                	<input type="text" id="name" name="name" placeholder="nome" required>
-                	<label for="username">Utilizador</label>
-                	<input type="text" id="username" name="username" placeholder="utilizador" required>
-                	<label for="password">Password</label>
-                	<input type="password" id="password" name="password" placeholder="password" required>
-                	<input type="submit" class="pure-button pure-button-primary" value="Register">
-            	</fieldset>
-        	</form>
-    	</section>
-    </div>
-    </div>
+
+    <div class="container">
+    	<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="panel panel-login">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-6">
+								<a href="#" class="active" id="login-form-link">Login</a>
+							</div>
+							<div class="col-xs-6">
+								<a href="#" id="register-form-link">Register</a>
+							</div>
+						</div>
+						<hr>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-lg-12">
+								<form name="login" id="login-form" role="form" style="display: block;" accept-charset="utf-8">
+									<div class="form-group">
+										<input type="text" name="email" id="email" tabindex="1" class="form-control" placeholder="Email">
+									</div>
+									<div class="form-group">
+										<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+									</div>
+									<div class="form-group text-center">
+										<input type="checkbox" tabindex="3" class="" name="remember" id="remember">
+										<label for="remember"> Remember Me</label>
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-sm-6 col-sm-offset-3">
+												<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Login">
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-lg-12">
+												<div class="text-center">
+													<a href="#" tabindex="5" class="forgot-password">Forgot Password?</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+								<form name="register" id="register-form" role="form" style="display: none;" accept-charset="utf-8">
+									<div class="form-group">
+										<input type="text" name="email" id="email" tabindex="1" class="form-control" placeholder="E-mail" value="" required>
+									</div>
+									<div class="form-group">
+										<input type="text" name="fixedPhone" id="fixedPhone" tabindex="2" class="form-control" placeholder="Telefone Fixo" value="" required>
+									</div>
+                                    <div class="form-group">
+										<input type="text" name="mobilePhone" id="mobilePhone" tabindex="3" class="form-control" placeholder="Telefone Movel" value="" required>
+									</div>
+                                    <div class="form-group">
+										<input type="text" name="street" id="street" tabindex="4" class="form-control" placeholder="Rua" value="" required>
+									</div>
+                                    <div class="form-group">
+										<input type="text" name="comp" id="comp" tabindex="5" class="form-control" placeholder="Complementar" value="" required>
+									</div>
+                                    <div class="form-group">
+										<input type="text" name="local" id="local" tabindex="6" class="form-control" placeholder="Localidade" value="" required>
+									</div>
+                                    <div class="form-group">
+										<input type="text" name="cp" id="cp" tabindex="7" class="form-control" placeholder="Codigo Postal" value="" required>
+									</div>
+                                    <div class="form-group">
+										<input type="text" name="nif" id="nif" tabindex="8" class="form-control" placeholder="NIF" value="" required>
+									</div>
+                                    <div class="form-group">
+										<input type="text" name="cc" id="cc" tabindex="9" class="form-control" placeholder="Cartao Cidadao" value=""required>
+									</div>
+									<div class="form-group">
+										<input type="password" name="password" id="password" tabindex="10" class="form-control" placeholder="Password" required>
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-sm-6 col-sm-offset-3">
+												<input type="submit" name="register-submit" id="register-submit" tabindex="11" class="form-control btn btn-register" value="Register">
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
     
 </body>
 

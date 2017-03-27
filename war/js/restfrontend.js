@@ -1,9 +1,29 @@
+$(function() {
+
+    $('#login-form-link').click(function(e) {
+		$("#login-form").delay(100).fadeIn(100);
+ 		$("#register-form").fadeOut(100);
+		$('#register-form-link').removeClass('active');
+		$(this).addClass('active');
+		e.preventDefault();
+	});
+	$('#register-form-link').click(function(e) {
+		$("#register-form").delay(100).fadeIn(100);
+ 		$("#login-form").fadeOut(100);
+		$('#login-form-link').removeClass('active');
+		$(this).addClass('active');
+		e.preventDefault();
+	});
+
+});
+
+
 captureData = function(event) {
     var data = $('form[name="login"]').jsonify();
     console.log(data);
     $.ajax({
         type: "POST",
-        url: "http://firstwebapp-159414.appspot.com/rest/login/v1",
+        url: "http://firstwebapp-159414.appspot.com/rest/login",
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
         dataType: "json",
@@ -29,7 +49,7 @@ registerData = function(event) {
     console.log(data);
     $.ajax({
         type: "POST",
-        url: "http://firstwebapp-159414.appspot.com/rest/register/v3",
+        url: "http://firstwebapp-159414.appspot.com/rest/register",
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
         dataType: "json",
