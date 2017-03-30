@@ -153,6 +153,8 @@ public class LoginResource {
 				t.setProperty("creation_time", token.getCreationData());
 				t.setProperty("expiration_time", token.getExpirationData());
 				
+				DATASTORE.put(t);
+				
 				LOG.info("User '" + data.email + "' logged in successfully.");
 				return Response.ok(g.toJson(token)).build();
 				
@@ -197,7 +199,7 @@ public class LoginResource {
 			if((long) token.getProperty("expiration_time") < System.currentTimeMillis()) {
 				return Response.status(Status.UNAUTHORIZED).entity(g.toJson("Session expired.")).build();
 			} else {
-				return Response.ok().build();
+				return Response.ok(g.toJson("Resuming session!")).build();
 			}
 			
 		} catch(EntityNotFoundException e) {

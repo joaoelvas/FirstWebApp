@@ -22,25 +22,11 @@
 <body>
     
     <header>
-            <nav class="navbar">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="#">APDC</a>
-                    </div>
-                    <ul class="nav navbar-nav">
-                        <li><a href="../"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
-                        <li class="active"><a href="../apdc"><span class="glyphicon glyphicon-briefcase"></span>  APDC</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/secret"><span class="glyphicon glyphicon-lock"></span>  Secret Area</a></li>
-                        <li><a href="login.html" id="login-link"><span class="glyphicon glyphicon-log-in"></span>  Login</a></li>
-                    </ul>
-                </div>
-            </nav>
+        <nav class="navbar" id="nav-menu"></nav>
     </header>
     
 
-    <div class="container">
+    <div class="container" id="login-form">
     	<div class="row">
 			<div class="col-md-6 col-md-offset-3">
 				<div class="panel panel-login">
@@ -132,6 +118,8 @@
 			</div>
 		</div>
 	</div>
+    
+    <script src="js/nav.js"></script>
     
 </body>
 

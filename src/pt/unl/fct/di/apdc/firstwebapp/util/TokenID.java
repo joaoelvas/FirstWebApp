@@ -2,7 +2,7 @@ package pt.unl.fct.di.apdc.firstwebapp.util;
 
 public class TokenID {
 
-	public String tokenID;
+	private String tokenID;
 	
 	public TokenID() {
 		
@@ -10,5 +10,9 @@ public class TokenID {
 	
 	public TokenID(String tokenID) {
 		this.tokenID = tokenID;
+	}
+	
+	public String getTokenID() {
+		return this.tokenID;
 	}
 }

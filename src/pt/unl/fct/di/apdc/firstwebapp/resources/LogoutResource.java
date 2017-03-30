@@ -12,7 +12,6 @@ import javax.ws.rs.core.Response.Status;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -20,7 +19,7 @@ import com.google.gson.Gson;
 
 import pt.unl.fct.di.apdc.firstwebapp.util.TokenID;
 
-@Path("login")
+@Path("logout")
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 public class LogoutResource {
 	
@@ -45,7 +44,7 @@ public class LogoutResource {
 			
 			DATASTORE.delete(key);
 			
-			return Response.ok().entity(g.toJson("Logged out.")).build();
+			return Response.ok(g.toJson("Logged out.")).build();
 		
 			
 		} catch(EntityNotFoundException e) {
