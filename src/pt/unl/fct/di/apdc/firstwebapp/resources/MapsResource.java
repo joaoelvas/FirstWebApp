@@ -79,7 +79,7 @@ public class MapsResource {
 	@Path("/address/{user}")
 	public Response getUserAddressFromID(@PathParam("user") String username) {
 		
-		Key userKey = KeyFactory.createKey("Person", username);
+		Key userKey = KeyFactory.createKey("User", username);
 		
 		try {
 			Entity user = DATASTORE.get(userKey);

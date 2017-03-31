@@ -140,7 +140,7 @@ public class RegisterResource {
 			DATASTORE.put(txn, user);
 			LOG.info("User '" + data.email + "' registered!");
 			txn.commit();
-			return Response.ok().entity(g.toJson("User registered.")).build();
+			return Response.ok(g.toJson("User registered.")).build();
 		} finally {
 			if(txn.isActive()) {
 				txn.rollback();
