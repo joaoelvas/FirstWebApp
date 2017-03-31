@@ -32,7 +32,7 @@ captureData = function(event) {
                 // alert("Got token with id: " + response.tokenID);
                 // Store token id for later use in localStorage
                 localStorage.setItem('tokenID', response.tokenID);
-                window.location.href = "/private-area";
+                window.location.href = "/dashboard";
             } else {
                 alert("No response");
             }
@@ -103,23 +103,13 @@ $('logout-link').click(function() {
     });
 });
 
-window.onload = function() {
-    var frms = $('form[name="login"]');     //var frms = document.getElementsByName("login");
-    var frmr = $('form[name="register"]');
-    frms[0].onsubmit = captureData;
-    frmr[0].onsubmit = registerData;
+$('login-link').click(function(e) {
     
     var token = localStorage.getItem('tokenID');
     
-    $('#logout-link').hide();
-    
-    if(token === null) {
-        
-    } else {
-        var data = {
+    var data = {
             tokenID: token
         }
-        
         $.ajax({
             type: "POST",
             url: "/rest/login/check",
@@ -128,22 +118,26 @@ window.onload = function() {
             dataType: "json",
             data: JSON.stringify(data),
             success: function(response) {
-                $('login-link').hide();
-                $('logout-link').show();
+                window.location.href("/dashboard");
             },
             error: function(response) {
                 if(response.statusCode === 401) {
-                    alert("Session expired, please login again!");
+                    console.log("Session expired, please login again!");
                 } else if(response.statusCode === 500) {
-                    alert("Internal Server Error");
+                    console.log("Internal Server Error");
                 } else if(response.statusCode === 403) {
-                    alert("No Active Session, please login!");
+                    console.log("No Active Session, please login!");
                 } else {
-                    alert("Error: "+ response.status);   
+                    console.log("Error: "+ response.status); 
                 }
             }
-        });    
-    }
+        });
+});
 
+window.onload = function() {
+    var frms = $('form[name="login"]');     //var frms = document.getElementsByName("login");
+    var frmr = $('form[name="register"]');
+    frms[0].onsubmit = captureData;
+    frmr[0].onsubmit = registerData;
 }
 

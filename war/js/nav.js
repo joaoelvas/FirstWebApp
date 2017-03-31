@@ -10,7 +10,6 @@ $(document).ready(function(){
             '</ul>' +
             '<ul class="nav navbar-nav navbar-right">' +
                 '<li><a href="login.html" id="login-link"><span class="glyphicon glyphicon-log-in"></span>  Login</a></li>' +
-                '<li><a href="" id="logout-link"><span class="glyphicon glyphicon-log-out"></span>  Logout</a></li>' +
             '</ul>' +
         '</div>');
 });

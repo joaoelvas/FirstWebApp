@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -20,11 +22,8 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.Filter;
-import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.gson.Gson;
 
-import pt.unl.fct.di.apdc.firstwebapp.exceptions.NoUserFoundException;
 import pt.unl.fct.di.apdc.firstwebapp.exceptions.TokenExpiredException;
 import pt.unl.fct.di.apdc.firstwebapp.util.AddressData;
 import pt.unl.fct.di.apdc.firstwebapp.util.TokenID;
@@ -66,10 +65,41 @@ public class MapsResource {
 			return Response.ok(g.toJson(add)).build();
 			
 		} catch(TokenExpiredException e) {
+			LOG.warning("Token not found.");
+			
 			return Response.status(Status.UNAUTHORIZED).entity(g.toJson("Token Expired")).build();
 		} catch (EntityNotFoundException e) {
+			LOG.warning("Authentication failed");
+			
 			return Response.status(Status.UNAUTHORIZED).entity(g.toJson("Authentication failed")).build();
 		}
+	}
+	
+	@GET
+	@Path("/address/{user}")
+	public Response getUserAddressFromID(@PathParam("user") String username) {
+		
+		Key userKey = KeyFactory.createKey("Person", username);
+		
+		try {
+			Entity user = DATASTORE.get(userKey);
+			
+			String street = (String) user.getProperty("street");
+			String local = (String) user.getProperty("local");
+			String postalCode = (String) user.getProperty("postalCode");
+			
+			AddressData add = new AddressData(street, local, postalCode);
+			
+			LOG.info("Requested '" + user.getProperty("email") + "' address.");
+			
+			return Response.ok(g.toJson(add)).build();
+			
+		} catch (EntityNotFoundException e) {
+			LOG.warning("Request on a non existing user.");
+			
+			return Response.status(Status.BAD_REQUEST).entity("User not found.").build();
+		}
+		
 	}
 	
 	@POST
@@ -86,17 +116,25 @@ public class MapsResource {
 			
 			Iterable<Entity> i = pq.asIterable();
 			
-			List<Entity> users = new LinkedList<>();
+			List<AddressData> addList = new LinkedList<>();
 			
 			for(Entity e: i) {
-				users.add(e);
+				String street = (String) e.getProperty("street");
+				String local = (String) e.getProperty("local");
+				String postalCode = (String) e.getProperty("postalCode");
+				
+				AddressData add = new AddressData(street, local, postalCode);
+				
+				addList.add(add);
 			}
 			
 			LOG.info("Username: " + username + " requested alluser address.");
 			
-			return Response.ok(g.toJson(users)).build();
+			return Response.ok(g.toJson(addList)).build();
 			
 		} catch (TokenExpiredException e) {
+			LOG.info("Token not found!");
+			
 			return Response.status(Status.UNAUTHORIZED).entity(g.toJson("Token Expired")).build();
 		}
 	}

@@ -191,7 +191,7 @@ public class LoginResource {
 	public Response isLogged(TokenID data) {
 		
 		
-		Key key = KeyFactory.createKey("Token", data.tokenID);
+		Key key = KeyFactory.createKey("Token", data.getTokenID());
 		
 		try {
 			Entity token = DATASTORE.get(key);

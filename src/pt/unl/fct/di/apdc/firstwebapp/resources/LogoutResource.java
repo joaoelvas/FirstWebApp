@@ -37,7 +37,7 @@ public class LogoutResource {
 	@Path("/")
 	public Response logout(TokenID data) {
 		
-		Key key = KeyFactory.createKey("Token", data.tokenID);
+		Key key = KeyFactory.createKey("Token", data.getTokenID());
 		
 		try {
 			DATASTORE.get(key);
